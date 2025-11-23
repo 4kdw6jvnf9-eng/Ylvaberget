@@ -111,20 +111,40 @@ header nav a:hover {
 /* === MAIN GALLERY LIST === */
 .gallery-list {
     flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: relative;
     z-index: 10;
 }
 
 .gallery-list ul {
     list-style: none;
-    text-align: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .gallery-list li {
-    margin: 1.5rem 0;
+    position: absolute;
+}
+
+/* Spredte posisjoner for hver tittel */
+.gallery-list li:nth-child(1) {
+    top: 10%;
+    left: 5%;
+}
+
+.gallery-list li:nth-child(2) {
+    top: 35%;
+    right: 8%;
+}
+
+.gallery-list li:nth-child(3) {
+    top: 55%;
+    left: 15%;
+}
+
+.gallery-list li:nth-child(4) {
+    top: 75%;
+    right: 12%;
 }
 
 .gallery-list .project-title {

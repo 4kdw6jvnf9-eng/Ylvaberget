@@ -1,0 +1,192 @@
+/* === RESET OG GRUNNLEGGENDE === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; /* Skjuler standard musepeker */
+}
+
+/* === FARGEVARIABLER === */
+:root {
+    --bg-color: #000000;
+    --text-light: rgb(224, 240, 255);  /* Original lyseblå */
+    --text-dark: rgb(50, 70, 100);      /* Mørk blå for titler */
+    --max-width: 1920px;
+    --margin: 1vw;
+}
+
+/* === BODY === */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-light);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-transform: lowercase;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--margin);
+    overflow-x: hidden;
+}
+
+/* === CUSTOM CURSOR - Lysende sirkel === */
+.cursor-glow {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle,
+        rgba(224, 240, 255, 0.9) 0%,
+        rgba(224, 240, 255, 0.4) 40%,
+        rgba(224, 240, 255, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: width 0.1s, height 0.1s;
+}
+
+/* === CURSOR TRAIL - Halen === */
+.cursor-trail {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle,
+        rgba(224, 240, 255, 0.5) 0%,
+        rgba(224, 240, 255, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out;
+}
+
+/* === HOVER CIRCLE - Lyser opp ved hover på titler === */
+.hover-circle {
+    position: fixed;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle,
+        rgba(224, 240, 255, 0.3) 0%,
+        rgba(224, 240, 255, 0.1) 50%,
+        rgba(224, 240, 255, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hover-circle.active {
+    opacity: 1;
+}
+
+/* === HEADER === */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    position: relative;
+    z-index: 100;
+}
+
+header .logo {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+header nav {
+    display: flex;
+    gap: 2rem;
+}
+
+header nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+header nav a:hover {
+    opacity: 0.7;
+}
+
+/* === MAIN GALLERY LIST === */
+.gallery-list {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.gallery-list ul {
+    list-style: none;
+    text-align: center;
+}
+
+.gallery-list li {
+    margin: 1.5rem 0;
+}
+
+.gallery-list .project-title {
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 400;
+    transition: color 0.3s ease;
+    display: inline-block;
+}
+
+.gallery-list .project-title:hover {
+    color: var(--text-light);
+}
+
+/* === FEATURED IMAGE CONTAINER === */
+.featured-image-container {
+    position: fixed;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    max-width: 300px;
+    max-height: 400px;
+}
+
+.featured-image-container.visible {
+    opacity: 1;
+}
+
+.featured-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* === FOOTER === */
+footer {
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 0.8rem;
+    position: relative;
+    z-index: 100;
+}
+
+/* === LINKS === */
+a {
+    cursor: none;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .gallery-list .project-title {
+        font-size: clamp(2rem, 10vw, 4rem);
+    }
+
+    .featured-image-container {
+        max-width: 200px;
+        max-height: 280px;
+    }
+}

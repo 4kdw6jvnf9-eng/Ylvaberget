@@ -34,7 +34,7 @@ projectTitles.forEach(title => {
 
 // Character glow effect based on mouse proximity
 function updateCharacterGlow() {
-    const glowRadius = 100;
+    const glowRadius = 40;
 
     projectTitles.forEach(title => {
         title.querySelectorAll('.char').forEach(char => {

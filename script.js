@@ -92,8 +92,8 @@ projectTitles.forEach(title => {
         featuredImage.src = imageSrc;
         featuredImage.alt = title.textContent;
 
-        // Position image at random edge position
-        positionImageAtEdge();
+        // Position image near the hovered title
+        positionImageNearTitle(title);
 
         featuredImageContainer.classList.add('visible');
     });
@@ -114,75 +114,43 @@ projectTitles.forEach(title => {
     });
 });
 
-// === POSITION IMAGE AT RANDOM EDGE ===
-// Grid: 4 columns (horizontal) x 3 rows (vertical)
-function positionImageAtEdge() {
-    const header = document.querySelector('header');
-    const footer = document.querySelector('footer');
-
-    // Get boundaries (avoid header and footer)
-    const headerHeight = header.offsetHeight + header.offsetTop;
-    const footerTop = footer.offsetTop;
-
-    // Available area
-    const availableWidth = window.innerWidth;
-    const availableHeight = footerTop - headerHeight;
+// === POSITION IMAGE NEAR TITLE ===
+// Places image randomly around the hovered title, slightly overlapping
+function positionImageNearTitle(title) {
+    const rect = title.getBoundingClientRect();
 
     // Image dimensions
     const imgWidth = 200;
     const imgHeight = 280;
 
-    // Define grid positions along edges
-    // 4 columns x 3 rows = 12 edge positions
-    const gridCols = 4;
-    const gridRows = 3;
-
-    // Calculate cell sizes
-    const cellWidth = availableWidth / gridCols;
-    const cellHeight = availableHeight / gridRows;
-
-    // Create array of edge positions
-    const edgePositions = [];
-
-    // Top edge (row 0, all columns)
-    for (let col = 0; col < gridCols; col++) {
-        edgePositions.push({
-            x: col * cellWidth + (cellWidth - imgWidth) / 2,
-            y: headerHeight + 20
-        });
-    }
-
-    // Bottom edge (row 2, all columns)
-    for (let col = 0; col < gridCols; col++) {
-        edgePositions.push({
-            x: col * cellWidth + (cellWidth - imgWidth) / 2,
-            y: footerTop - imgHeight - 20
-        });
-    }
-
-    // Left edge (col 0, middle rows)
-    for (let row = 1; row < gridRows - 1; row++) {
-        edgePositions.push({
-            x: 20,
-            y: headerHeight + row * cellHeight + (cellHeight - imgHeight) / 2
-        });
-    }
-
-    // Right edge (col 3, middle rows)
-    for (let row = 1; row < gridRows - 1; row++) {
-        edgePositions.push({
-            x: availableWidth - imgWidth - 20,
-            y: headerHeight + row * cellHeight + (cellHeight - imgHeight) / 2
-        });
-    }
+    // Random positions around the title
+    // Array of possible positions relative to title
+    const positions = [
+        // Above and to the left
+        { x: rect.left - imgWidth + 50, y: rect.top - imgHeight + 40 },
+        // Above and to the right
+        { x: rect.right - 50, y: rect.top - imgHeight + 40 },
+        // Below and to the left
+        { x: rect.left - imgWidth + 50, y: rect.bottom - 40 },
+        // Below and to the right
+        { x: rect.right - 50, y: rect.bottom - 40 },
+        // To the left, vertically centered
+        { x: rect.left - imgWidth + 60, y: rect.top - imgHeight / 2 + rect.height / 2 },
+        // To the right, vertically centered
+        { x: rect.right - 60, y: rect.top - imgHeight / 2 + rect.height / 2 }
+    ];
 
     // Pick random position
-    const randomIndex = Math.floor(Math.random() * edgePositions.length);
-    const position = edgePositions[randomIndex];
+    const randomIndex = Math.floor(Math.random() * positions.length);
+    const position = positions[randomIndex];
+
+    // Keep image within viewport bounds
+    const finalX = Math.max(10, Math.min(position.x, window.innerWidth - imgWidth - 10));
+    const finalY = Math.max(10, Math.min(position.y, window.innerHeight - imgHeight - 10));
 
     // Apply position
-    featuredImageContainer.style.left = Math.max(0, position.x) + 'px';
-    featuredImageContainer.style.top = Math.max(headerHeight, position.y) + 'px';
+    featuredImageContainer.style.left = finalX + 'px';
+    featuredImageContainer.style.top = finalY + 'px';
 }
 
 // === HIDE CURSOR WHEN LEAVING WINDOW ===

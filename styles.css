@@ -59,8 +59,8 @@ body {
 /* === HOVER CIRCLE - Lyser opp ved hover på titler === */
 .hover-circle {
     position: fixed;
-    width: 150px;
-    height: 150px;
+    width: 60px;
+    height: 60px;
     background: radial-gradient(circle,
         rgba(224, 240, 255, 0.3) 0%,
         rgba(224, 240, 255, 0.1) 50%,
@@ -136,12 +136,12 @@ header nav a:hover {
 
 .gallery-list li:nth-child(2) {
     top: 35%;
-    right: 2%;
+    right: 0%;
 }
 
 .gallery-list li:nth-child(3) {
     top: 55%;
-    left: 3%;
+    left: 1%;
 }
 
 .gallery-list li:nth-child(4) {

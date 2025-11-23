@@ -133,6 +133,7 @@ header nav a:hover {
     font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 400;
     display: inline-block;
+    white-space: nowrap;
 }
 
 /* Individuelle bokstaver i titler */

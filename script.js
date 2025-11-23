@@ -118,6 +118,12 @@ projectTitles.forEach(title => {
 // Places image randomly around the hovered title, slightly overlapping
 function positionImageNearTitle(title) {
     const rect = title.getBoundingClientRect();
+    const header = document.querySelector('header');
+    const footer = document.querySelector('footer');
+
+    // Get boundaries (avoid header and footer)
+    const headerBottom = header.getBoundingClientRect().bottom;
+    const footerTop = footer.getBoundingClientRect().top;
 
     // Image dimensions
     const imgWidth = 200;
@@ -144,9 +150,9 @@ function positionImageNearTitle(title) {
     const randomIndex = Math.floor(Math.random() * positions.length);
     const position = positions[randomIndex];
 
-    // Keep image within viewport bounds
+    // Keep image within viewport bounds and outside header/footer
     const finalX = Math.max(10, Math.min(position.x, window.innerWidth - imgWidth - 10));
-    const finalY = Math.max(10, Math.min(position.y, window.innerHeight - imgHeight - 10));
+    const finalY = Math.max(headerBottom + 10, Math.min(position.y, footerTop - imgHeight - 10));
 
     // Apply position
     featuredImageContainer.style.left = finalX + 'px';

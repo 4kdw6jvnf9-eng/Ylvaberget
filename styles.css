@@ -136,17 +136,17 @@ header nav a:hover {
 
 .gallery-list li:nth-child(2) {
     top: 35%;
-    right: 8%;
+    right: 2%;
 }
 
 .gallery-list li:nth-child(3) {
     top: 55%;
-    left: 15%;
+    left: 3%;
 }
 
 .gallery-list li:nth-child(4) {
     top: 75%;
-    right: 12%;
+    right: 5%;
 }
 
 .gallery-list .project-title {

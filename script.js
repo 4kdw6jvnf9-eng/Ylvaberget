@@ -1,6 +1,5 @@
 // === CURSOR ELEMENTS ===
 const cursorGlow = document.getElementById('cursorGlow');
-const cursorTrail = document.getElementById('cursorTrail');
 const hoverCircle = document.getElementById('hoverCircle');
 const featuredImageContainer = document.getElementById('featuredImageContainer');
 const featuredImage = document.getElementById('featuredImage');
@@ -8,8 +7,6 @@ const featuredImage = document.getElementById('featuredImage');
 // === CURSOR POSITION ===
 let mouseX = 0;
 let mouseY = 0;
-let trailX = 0;
-let trailY = 0;
 
 // === CUSTOM CURSOR MOVEMENT ===
 document.addEventListener('mousemove', (e) => {
@@ -24,20 +21,6 @@ document.addEventListener('mousemove', (e) => {
     hoverCircle.style.left = mouseX + 'px';
     hoverCircle.style.top = mouseY + 'px';
 });
-
-// === TRAIL ANIMATION - Smooth following ===
-function animateTrail() {
-    // Smooth interpolation for trail (creates the "hale" effect)
-    const speed = 0.15;
-    trailX += (mouseX - trailX) * speed;
-    trailY += (mouseY - trailY) * speed;
-
-    cursorTrail.style.left = trailX + 'px';
-    cursorTrail.style.top = trailY + 'px';
-
-    requestAnimationFrame(animateTrail);
-}
-animateTrail();
 
 // === PROJECT TITLES SETUP ===
 const projectTitles = document.querySelectorAll('.project-title');
@@ -146,8 +129,8 @@ function positionImageAtEdge() {
     const availableHeight = footerTop - headerHeight;
 
     // Image dimensions
-    const imgWidth = 300;
-    const imgHeight = 400;
+    const imgWidth = 200;
+    const imgHeight = 280;
 
     // Define grid positions along edges
     // 4 columns x 3 rows = 12 edge positions
@@ -205,14 +188,11 @@ function positionImageAtEdge() {
 // === HIDE CURSOR WHEN LEAVING WINDOW ===
 document.addEventListener('mouseleave', () => {
     cursorGlow.style.opacity = '0';
-    cursorTrail.style.opacity = '0';
 });
 
 document.addEventListener('mouseenter', () => {
     cursorGlow.style.opacity = '1';
-    cursorTrail.style.opacity = '1';
 });
 
 // === INITIAL CURSOR POSITION (off-screen) ===
 cursorGlow.style.left = '-100px';
-cursorTrail.style.left = '-100px';

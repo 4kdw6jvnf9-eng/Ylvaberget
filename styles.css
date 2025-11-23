@@ -59,8 +59,8 @@ body {
 /* === HOVER CIRCLE - Lyser opp ved hover på titler === */
 .hover-circle {
     position: fixed;
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     background: radial-gradient(circle,
         rgba(224, 240, 255, 0.3) 0%,
         rgba(224, 240, 255, 0.1) 50%,

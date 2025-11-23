@@ -34,7 +34,7 @@ projectTitles.forEach(title => {
 
 // Character glow effect based on mouse proximity
 function updateCharacterGlow() {
-    const glowRadius = 40;
+    const glowRadius = 80;
 
     projectTitles.forEach(title => {
         title.querySelectorAll('.char').forEach(char => {
@@ -92,13 +92,16 @@ function positionImageNearTitle(title) {
     const imgWidth = 200;
     const imgHeight = 280;
 
+    // Positions that overlap significantly with the title text
+    const titleCenterX = rect.left + rect.width / 2;
+    const titleCenterY = rect.top + rect.height / 2;
+
     const positions = [
-        { x: rect.left - imgWidth / 2, y: rect.top - imgHeight + 60 },
-        { x: rect.right - imgWidth / 2, y: rect.top - imgHeight + 60 },
-        { x: rect.left - imgWidth / 2, y: rect.bottom - 60 },
-        { x: rect.right - imgWidth / 2, y: rect.bottom - 60 },
-        { x: rect.left - imgWidth / 2, y: rect.top - imgHeight / 2 + rect.height / 2 },
-        { x: rect.right - imgWidth / 2, y: rect.top - imgHeight / 2 + rect.height / 2 }
+        { x: titleCenterX - imgWidth / 2 - 30, y: titleCenterY - imgHeight / 2 - 40 },
+        { x: titleCenterX - imgWidth / 2 + 30, y: titleCenterY - imgHeight / 2 - 40 },
+        { x: titleCenterX - imgWidth / 2 - 30, y: titleCenterY - imgHeight / 2 + 40 },
+        { x: titleCenterX - imgWidth / 2 + 30, y: titleCenterY - imgHeight / 2 + 40 },
+        { x: titleCenterX - imgWidth / 2, y: titleCenterY - imgHeight / 2 }
     ];
 
     const position = positions[Math.floor(Math.random() * positions.length)];

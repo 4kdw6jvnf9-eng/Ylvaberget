@@ -39,13 +39,68 @@ function animateTrail() {
 }
 animateTrail();
 
-// === PROJECT TITLES HOVER EFFECTS ===
+// === PROJECT TITLES SETUP ===
 const projectTitles = document.querySelectorAll('.project-title');
 
+// Split each title into individual character spans
+projectTitles.forEach(title => {
+    const text = title.textContent;
+    title.innerHTML = '';
+
+    for (let i = 0; i < text.length; i++) {
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = text[i] === ' ' ? '\u00A0' : text[i]; // Use non-breaking space
+        title.appendChild(span);
+    }
+});
+
+// === CHARACTER GLOW EFFECT ===
+// Update character colors based on mouse proximity
+function updateCharacterGlow() {
+    projectTitles.forEach(title => {
+        const chars = title.querySelectorAll('.char');
+
+        chars.forEach(char => {
+            const rect = char.getBoundingClientRect();
+            const charCenterX = rect.left + rect.width / 2;
+            const charCenterY = rect.top + rect.height / 2;
+
+            // Calculate distance from mouse to character center
+            const distance = Math.sqrt(
+                Math.pow(mouseX - charCenterX, 2) +
+                Math.pow(mouseY - charCenterY, 2)
+            );
+
+            // Glow radius - characters within this distance will be affected
+            const glowRadius = 100;
+
+            if (distance < glowRadius) {
+                // Calculate intensity based on distance (closer = brighter)
+                const intensity = 1 - (distance / glowRadius);
+
+                // Interpolate between dark blue and light blue
+                const r = Math.round(30 + (224 - 30) * intensity);
+                const g = Math.round(45 + (240 - 45) * intensity);
+                const b = Math.round(80 + (255 - 80) * intensity);
+
+                char.style.color = `rgb(${r}, ${g}, ${b})`;
+            } else {
+                char.style.color = '';
+            }
+        });
+    });
+
+    requestAnimationFrame(updateCharacterGlow);
+}
+updateCharacterGlow();
+
+// === PROJECT TITLES HOVER EFFECTS ===
 projectTitles.forEach(title => {
     title.addEventListener('mouseenter', (e) => {
-        // Activate hover circle
+        // Activate hover circle and cursor glow
         hoverCircle.classList.add('active');
+        cursorGlow.classList.add('over-text');
 
         // Get image source from data attribute
         const imageSrc = title.getAttribute('data-image');
@@ -61,11 +116,18 @@ projectTitles.forEach(title => {
     });
 
     title.addEventListener('mouseleave', () => {
-        // Deactivate hover circle
+        // Deactivate hover circle and cursor glow
         hoverCircle.classList.remove('active');
+        cursorGlow.classList.remove('over-text');
 
         // Hide featured image
         featuredImageContainer.classList.remove('visible');
+
+        // Reset all character colors
+        const chars = title.querySelectorAll('.char');
+        chars.forEach(char => {
+            char.style.color = '';
+        });
     });
 });
 

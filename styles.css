@@ -10,7 +10,7 @@
 :root {
     --bg-color: #000000;
     --text-light: rgb(224, 240, 255);  /* Original lyseblå */
-    --text-dark: rgb(50, 70, 100);      /* Mørk blå for titler */
+    --text-dark: rgb(30, 45, 80);      /* Mørkere blå for titler */
     --max-width: 1920px;
     --margin: 1vw;
 }
@@ -33,17 +33,27 @@ body {
 /* === CUSTOM CURSOR - Lysende sirkel === */
 .cursor-glow {
     position: fixed;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     background: radial-gradient(circle,
-        rgba(224, 240, 255, 0.9) 0%,
-        rgba(224, 240, 255, 0.4) 40%,
-        rgba(224, 240, 255, 0) 70%);
+        rgba(224, 240, 255, 1) 0%,
+        rgba(224, 240, 255, 0.6) 30%,
+        rgba(224, 240, 255, 0) 60%);
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
     transform: translate(-50%, -50%);
-    transition: width 0.1s, height 0.1s;
+    transition: width 0.2s, height 0.2s, background 0.2s;
+}
+
+/* Cursor blir enda lysere over tekst */
+.cursor-glow.over-text {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle,
+        rgba(224, 240, 255, 1) 0%,
+        rgba(224, 240, 255, 0.8) 30%,
+        rgba(224, 240, 255, 0) 60%);
 }
 
 /* === CURSOR TRAIL - Halen === */
@@ -136,12 +146,13 @@ header nav a:hover {
     text-decoration: none;
     font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 400;
-    transition: color 0.3s ease;
     display: inline-block;
 }
 
-.gallery-list .project-title:hover {
-    color: var(--text-light);
+/* Individuelle bokstaver i titler */
+.gallery-list .project-title .char {
+    display: inline-block;
+    transition: color 0.15s ease;
 }
 
 /* === FEATURED IMAGE CONTAINER === */

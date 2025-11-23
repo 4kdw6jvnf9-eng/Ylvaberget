@@ -7,6 +7,7 @@ const featuredImage = document.getElementById('featuredImage');
 // Mouse position
 let mouseX = 0;
 let mouseY = 0;
+let currentHoveredTitle = null;
 
 // Track mouse movement
 document.addEventListener('mousemove', (e) => {
@@ -32,16 +33,38 @@ projectTitles.forEach(title => {
     }
 });
 
-// Character glow effect based on mouse proximity
-function updateCharacterGlow() {
+// Check if mouse is actually over the text characters
+function isMouseOverText(title) {
+    const chars = title.querySelectorAll('.char');
+    for (const char of chars) {
+        const rect = char.getBoundingClientRect();
+        if (mouseX >= rect.left && mouseX <= rect.right &&
+            mouseY >= rect.top && mouseY <= rect.bottom) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Character glow effect and hover detection
+function updateEffects() {
     const glowRadius = 80;
+    let foundHover = null;
 
     projectTitles.forEach(title => {
+        let isOverThisTitle = false;
+
         title.querySelectorAll('.char').forEach(char => {
             const rect = char.getBoundingClientRect();
             const charX = rect.left + rect.width / 2;
             const charY = rect.top + rect.height / 2;
             const distance = Math.sqrt(Math.pow(mouseX - charX, 2) + Math.pow(mouseY - charY, 2));
+
+            // Check if mouse is directly over this character
+            if (mouseX >= rect.left && mouseX <= rect.right &&
+                mouseY >= rect.top && mouseY <= rect.bottom) {
+                isOverThisTitle = true;
+            }
 
             if (distance < glowRadius) {
                 const intensity = 1 - (distance / glowRadius);
@@ -53,35 +76,39 @@ function updateCharacterGlow() {
                 char.style.color = '';
             }
         });
+
+        if (isOverThisTitle) {
+            foundHover = title;
+        }
     });
-    requestAnimationFrame(updateCharacterGlow);
+
+    // Handle hover state changes
+    if (foundHover !== currentHoveredTitle) {
+        if (currentHoveredTitle) {
+            // Mouse left previous title
+            hoverCircle.classList.remove('active');
+            cursorGlow.classList.remove('over-text');
+            featuredImageContainer.classList.remove('visible');
+        }
+
+        if (foundHover) {
+            // Mouse entered new title
+            hoverCircle.classList.add('active');
+            cursorGlow.classList.add('over-text');
+            featuredImage.src = foundHover.getAttribute('data-image');
+            featuredImage.alt = foundHover.textContent;
+            positionImageNearTitle(foundHover);
+            featuredImageContainer.classList.add('visible');
+        }
+
+        currentHoveredTitle = foundHover;
+    }
+
+    requestAnimationFrame(updateEffects);
 }
-updateCharacterGlow();
+updateEffects();
 
-// Title hover effects
-projectTitles.forEach(title => {
-    title.addEventListener('mouseenter', () => {
-        hoverCircle.classList.add('active');
-        cursorGlow.classList.add('over-text');
-
-        featuredImage.src = title.getAttribute('data-image');
-        featuredImage.alt = title.textContent;
-        positionImageNearTitle(title);
-        featuredImageContainer.classList.add('visible');
-    });
-
-    title.addEventListener('mouseleave', () => {
-        hoverCircle.classList.remove('active');
-        cursorGlow.classList.remove('over-text');
-        featuredImageContainer.classList.remove('visible');
-
-        title.querySelectorAll('.char').forEach(char => {
-            char.style.color = '';
-        });
-    });
-});
-
-// Position image near hovered title with overlap
+// Position image with just a corner/edge overlapping the title
 function positionImageNearTitle(title) {
     const rect = title.getBoundingClientRect();
     const header = document.querySelector('header');
@@ -92,16 +119,16 @@ function positionImageNearTitle(title) {
     const imgWidth = 200;
     const imgHeight = 280;
 
-    // Positions that overlap significantly with the title text
-    const titleCenterX = rect.left + rect.width / 2;
-    const titleCenterY = rect.top + rect.height / 2;
-
+    // Positions where just a corner overlaps with title
     const positions = [
-        { x: titleCenterX - imgWidth / 2 - 30, y: titleCenterY - imgHeight / 2 - 40 },
-        { x: titleCenterX - imgWidth / 2 + 30, y: titleCenterY - imgHeight / 2 - 40 },
-        { x: titleCenterX - imgWidth / 2 - 30, y: titleCenterY - imgHeight / 2 + 40 },
-        { x: titleCenterX - imgWidth / 2 + 30, y: titleCenterY - imgHeight / 2 + 40 },
-        { x: titleCenterX - imgWidth / 2, y: titleCenterY - imgHeight / 2 }
+        // Top-left corner of image overlaps bottom-right of title
+        { x: rect.right - 30, y: rect.bottom - 30 },
+        // Top-right corner of image overlaps bottom-left of title
+        { x: rect.left - imgWidth + 30, y: rect.bottom - 30 },
+        // Bottom-left corner of image overlaps top-right of title
+        { x: rect.right - 30, y: rect.top - imgHeight + 30 },
+        // Bottom-right corner of image overlaps top-left of title
+        { x: rect.left - imgWidth + 30, y: rect.top - imgHeight + 30 }
     ];
 
     const position = positions[Math.floor(Math.random() * positions.length)];
